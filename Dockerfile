@@ -1,8 +1,8 @@
 FROM hypriot/rpi-alpine-scratch
 
 MAINTAINER Andreas Eiermann <andreas@hypriot.com>
-LABEL version="alpine linux version: 3.6\r\nhugo version: 0.26"
-ENV HUGO_VERSION=0.26
+LABEL version="alpine linux version: 3.6\r\nhugo version: 0.27"
+ENV HUGO_VERSION=0.27
  
 # set alpine to version 3.6 instead of edge
 RUN echo "http://nl.alpinelinux.org/alpine/v3.6/main" > /etc/apk/repositories

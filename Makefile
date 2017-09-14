@@ -3,7 +3,8 @@ SHA := $(shell git rev-parse --short HEAD)
 targz_file := $(shell cat FILEPATH)
 timestamp := $(shell date +"%Y%m%d%H%M")
 VERSION :=$(shell cat VERSION)
-#| sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]$//')        	
+NAMESPACE=grembold
+#REGISTRY_URL=hub.docker.com
 
 default: download dockerbuild push
 
@@ -14,11 +15,12 @@ loadS3_and_extract:
 	ls -la content/
 
 download:
+	if [ -d "content" ]; then rm -r content; fi
 	curl -L https://github.com/gohugoio/hugo/releases/download/v$(VERSION)/hugo_$(VERSION)_Linux-ARM.tar.gz > ./binary.tar.gz
 	mkdir content/
 	tar xzf binary.tar.gz -C content/
-	cd content && \
-	mv hugo*/hugo* ./hugo
+	cd content
+# mv hugo*/hugo* ./hugo
 	ls -la content/
 
 dockerbuild:
@@ -35,19 +37,19 @@ testimg:
 
 push:
 	# push VERSION
-	docker tag -f $(NAMESPACE)/$(IMAGENAME):latest $(REGISTRY_URL)/$(NAMESPACE)/$(IMAGENAME):$(VERSION)
-	docker push $(REGISTRY_URL)/$(NAMESPACE)/$(IMAGENAME):$(VERSION)
-	docker rmi $(REGISTRY_URL)/$(NAMESPACE)/$(IMAGENAME):$(VERSION) || true
+	docker tag $(NAMESPACE)/$(IMAGENAME):latest $(NAMESPACE)/$(IMAGENAME):$(VERSION)
+	docker push $(NAMESPACE)/$(IMAGENAME):$(VERSION)
+	docker rmi $(NAMESPACE)/$(IMAGENAME):$(VERSION) || true
 	# push commit SHA
-	docker tag -f $(NAMESPACE)/$(IMAGENAME):latest $(REGISTRY_URL)/$(NAMESPACE)/$(IMAGENAME):$(SHA)
-	docker push $(REGISTRY_URL)/$(NAMESPACE)/$(IMAGENAME):$(SHA)
-	docker rmi $(REGISTRY_URL)/$(NAMESPACE)/$(IMAGENAME):$(SHA) || true
+	docker tag $(NAMESPACE)/$(IMAGENAME):latest $(NAMESPACE)/$(IMAGENAME):$(SHA)
+	docker push $(NAMESPACE)/$(IMAGENAME):$(SHA)
+	docker rmi $(NAMESPACE)/$(IMAGENAME):$(SHA) || true
 	# push timestamp
-	docker tag -f $(NAMESPACE)/$(IMAGENAME):latest $(REGISTRY_URL)/$(NAMESPACE)/$(IMAGENAME):$(timestamp)
-	docker push $(REGISTRY_URL)/$(NAMESPACE)/$(IMAGENAME):$(timestamp)
-	docker rmi $(REGISTRY_URL)/$(NAMESPACE)/$(IMAGENAME):$(timestamp) || true
+	docker tag $(NAMESPACE)/$(IMAGENAME):latest $(NAMESPACE)/$(IMAGENAME):$(timestamp)
+	docker push $(NAMESPACE)/$(IMAGENAME):$(timestamp)
+	docker rmi $(NAMESPACE)/$(IMAGENAME):$(timestamp) || true
 	# push latest
-	docker tag -f $(NAMESPACE)/$(IMAGENAME):latest $(REGISTRY_URL)/$(NAMESPACE)/$(IMAGENAME):latest
-	docker push $(REGISTRY_URL)/$(NAMESPACE)/$(IMAGENAME):latest
-	docker rmi $(REGISTRY_URL)/$(NAMESPACE)/$(IMAGENAME):latest || true
+	docker tag $(NAMESPACE)/$(IMAGENAME):latest $(NAMESPACE)/$(IMAGENAME):latest
+	docker push $(NAMESPACE)/$(IMAGENAME):latest
+	docker rmi $(NAMESPACE)/$(IMAGENAME):latest || true
                         	
