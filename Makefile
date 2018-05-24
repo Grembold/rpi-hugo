@@ -8,11 +8,11 @@ NAMESPACE=grembold
 
 default: download dockerbuild push
 
-loadS3_and_extract:
-	aws s3 cp s3://$(AWS_BUCKET)/$(targz_file) >./binary.tar.gz
-	mkdir contents/
-	tar xzf binary.tar.gz -C content/
-	ls -la content/
+#loadS3_and_extract:
+#	aws s3 cp s3://$(AWS_BUCKET)/$(targz_file) >./binary.tar.gz
+#	mkdir contents/
+#	tar xzf binary.tar.gz -C content/
+#	ls -la content/
 
 download:
 	if [ -d "content" ]; then rm -r content; fi
@@ -27,7 +27,8 @@ dockerbuild:
 	docker rmi -f $(NAMESPACE)/$(IMAGENAME):$(VERSION)_bak || true
 	docker tag $(NAMESPACE)/$(IMAGENAME) $(NAMESPACE)/$(IMAGENAME):$(VERSION)_bak || true
 	docker rmi -f $(NAMESPACE)/$(IMAGENAME):$(VERSION) || true
-	docker build -t $(NAMESPACE)/$(IMAGENAME):$(VERSION) .
+	docker build -t $(NAMESPACE)/$(IMAGENAME) .
+	#:$(VERSION) .
 
 testimg:
 	docker rm -f new-$(IMAGENAME) || true
