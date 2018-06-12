@@ -1,4 +1,5 @@
-# rpi-hugo [![Build Status](http://armbuilder2.hypriot.com/api/badge/github.com/hypriot/rpi-hugo/status.svg?branch=master)](http://armbuilder.hypriot.com/github.com/hypriot/rpi-hugo)
+[![](https://images.microbadger.com/badges/version/grembold/rpi-hugo.svg)](https://microbadger.com/images/grembold/rpi-hugo "Get your own version badge on microbadger.com") [![](https://images.microbadger.com/badges/image/grembold/rpi-hugo.svg)](https://microbadger.com/images/grembold/rpi-hugo "Get your own image badge on microbadger.com")
+# rpi-hugo 
 
 Raspberry Pi compatible Docker Image with [Hugo](http://gohugo.io) - a static webpage builder
 
